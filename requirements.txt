@@ -1,4 +1,4 @@
-Django==3.2.*
+Django
 dj-database-url
 djangorestframework
 djangorestframework-simplejwt
@@ -7,7 +7,7 @@ django-storages
 drf-spectacular
 pytest-django
 coverage
-psycopg2
+psycopg
 gunicorn
 channels
 channels-redis
