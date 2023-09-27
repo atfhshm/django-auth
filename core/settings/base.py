@@ -6,7 +6,7 @@ from pathlib import Path
 from datetime import timedelta
 from decouple import config
 
-
+import structlog
 from ..logging import LOGGING
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
+    "django_structlog",
     # Project apps
     "users.apps.UsersConfig",
 ]
@@ -46,8 +47,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Third-party middleware
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    "django_structlog.middlewares.RequestMiddleware"
 ]
+
+# structured logger
+logger = structlog.get_logger(__name__)
 
 # Django-REST framework settings
 
@@ -59,13 +63,13 @@ REST_FRAMEWORK = {
 
 # Simple JWT settings
 
-# REST_FRAMEWORK.update(
-#     {
-#         "DEFAULT_AUTHENTICATION_CLASSES": (
-#             "rest_framework_simplejwt.authentication.JWTAuthentication",
-#         ),
-#     }
-# )
+REST_FRAMEWORK.update(
+    {
+        "DEFAULT_AUTHENTICATION_CLASSES": (
+            "rest_framework_simplejwt.authentication.JWTAuthentication",
+        ),
+    }
+)
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
@@ -159,8 +163,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 
-# STATICFILE_DIR = BASE_DIR.joinpath("static/")
-# STATICFILES_DIRS = (STATICFILE_DIR,)
+STATICFILE_DIR = BASE_DIR.joinpath("static/")
+STATICFILES_DIRS = (STATICFILE_DIR,)
 
 
 STATIC_URL = "/static/"

@@ -6,6 +6,9 @@ from decouple import config
 
 
 def main():
+    check_log_dir_exists = os.path.exists("./logs")
+    if not check_log_dir_exists:
+        os.makedirs("logs", exist_ok=True)
     """Run administrative tasks."""
     if config("DEBUG", cast=bool):
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.dev")

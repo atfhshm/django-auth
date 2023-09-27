@@ -1,12 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from users.models import User
 
-
-admin.site.unregister(Group)
-
-
+admin.site.register(Permission)
 @admin.register(User)
 class UserAdminConfig(UserAdmin):
     list_display = (
@@ -37,31 +34,7 @@ class UserAdminConfig(UserAdmin):
             },
         ),
     )
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "first_name",
-                    "last_name",
-                    "email",
-                    "username",
-                    "password",
-                )
-            },
-        ),
-        (
-            None,
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                )
-            },
-        ),
-    )
+    
     list_filter = ("is_active", "is_staff", "is_superuser")
     search_fields = ("username", "email")
     ordering = ("email",)
-    filter_horizontal = []
