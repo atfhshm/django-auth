@@ -2,6 +2,7 @@
 Django project base settings
 """
 
+
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
@@ -47,7 +48,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Third-party middleware
     "corsheaders.middleware.CorsMiddleware",
-    "django_structlog.middlewares.RequestMiddleware"
+    "django_structlog.middlewares.RequestMiddleware",
 ]
 
 # structured logger
@@ -66,7 +67,7 @@ REST_FRAMEWORK = {
 REST_FRAMEWORK.update(
     {
         "DEFAULT_AUTHENTICATION_CLASSES": (
-            "rest_framework_simplejwt.authentication.JWTAuthentication",
+            "users.authentication.CustomJWTAuthentication",
         ),
     }
 )
@@ -98,12 +99,22 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
 
+# Cookies settings
+AUTH_ACCESS_COOKIE = "access"
+AUTH_ACCESS_COOKIE_MAX_AGE = 60 * 5
+AUTH_REFRESH_COOKIE = "refresh"
+AUTH_REFRESH_COOKIE_MAX_AGE = 60 * 60 * 24
+AUTH_COOKIE_SECURE = config("AUTH_COOKIE_SECURE", cast=bool, default=True)
+AUTH_COOKIE_HTTP_ONLY = True
+AUTH_COOKIE_PATH = "/"
+AUTH_COOKIE_SAMESITE = "None"
 # CORS settings
 
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
 ]
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Root URLS file for the project
 
